@@ -1,0 +1,60 @@
+{
+ "name": "La Pausa · The MateArte's Club",
+ "short_name": "La Pausa",
+ "lang": "es",
+ "id": "./",
+ "start_url": "./#anotar",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#382620",
+ "theme_color": "#382620",
+ "description": "Anotá lo que no te podés olvidar y pasalo a la agenda en la pausa del mate.",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any"
+  },
+  {
+   "src": "icons/maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ],
+ "shortcuts": [
+  {
+   "name": "Hablar",
+   "url": "./#hablar"
+  },
+  {
+   "name": "Anotar",
+   "url": "./#anotar"
+  },
+  {
+   "name": "Calendario",
+   "url": "./#calendario"
+  },
+  {
+   "name": "Pausa del mate",
+   "url": "./#pausa"
+  }
+ ],
+ "share_target": {
+  "action": "./",
+  "method": "GET",
+  "params": {
+   "title": "title",
+   "text": "text",
+   "url": "url"
+  }
+ }
+}
