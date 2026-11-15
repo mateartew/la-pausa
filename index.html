@@ -33,12 +33,12 @@ function track(ev){
   const root = document.documentElement, mq = matchMedia("(prefers-color-scheme: light)");
   let pref = "auto"; try { pref = localStorage.getItem("lapausa.theme") || "auto"; } catch(e) {}
   function apply(anim){
-    const glass = pref === "glass", t = glass ? "light" : pref === "auto" ? (mq.matches ? "light" : "dark") : pref;
+    const glass = pref === "glass", t = glass ? "dark" : pref === "auto" ? (mq.matches ? "light" : "dark") : pref;
     root.classList.toggle("glass-ui", glass);
     if (anim) { root.classList.add("theme-anim"); setTimeout(() => root.classList.remove("theme-anim"), 420); }
     root.dataset.theme = t; root.dataset.pref = pref; root.classList.toggle("light-ui", t === "light");
     let m = document.querySelector('meta[name="theme-color"]'); if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.append(m); }
-    m.content = glass ? "#F6ECF7" : t === "light" ? "#F7F1E8" : "#382620";
+    m.content = glass ? "#3A2721" : t === "light" ? "#F7F1E8" : "#382620";
     const b = document.getElementById("thm"); if (b) b.setAttribute("aria-label", "Tema: " + (pref === "auto" ? "automático" : pref === "light" ? "claro" : pref === "glass" ? "cristal" : "oscuro") + ". Tocá para cambiar");
   }
   apply(false);
@@ -739,32 +739,24 @@ html.theme-anim *,html.theme-anim *::before,html.theme-anim *::after{transition:
 .edit.ed-t input{flex:1;min-width:0}
 @media (prefers-reduced-motion:reduce){.qd{animation:none}.hoy-pg i{transition:none}}
 
-/* ---- tema Cristal (opcional; no cambia Claro ni Oscuro) ---- */
+/* ---- tema Cristal (opcional): mismos colores de la app, con paneles de vidrio ---- */
 .seg3{grid-template-columns:repeat(4,1fr)}
 .seg3 button{font-size:12.5px;padding:0 2px}
-:root.glass-ui{--bg:#F6EEF9;--ink:#3B2A47;--muted:#75648A;--line:rgba(120,90,160,.16);--soft:rgba(255,255,255,.5);--raise:rgba(255,255,255,.72);
-  --pink:#F2B4DF;--pink-2:#F9D5EE;--pink-ink:#A9479A;--on-brown:#3B2A47;--logo:#3B2A47;--hol:#C9579F;
-  --gl:linear-gradient(145deg,rgba(255,255,255,.66),rgba(255,255,255,.32));--gl-b:1px solid rgba(255,255,255,.85);--gl-s:0 22px 50px -22px rgba(120,90,160,.4),inset 0 1px 0 rgba(255,255,255,.9)}
+:root.glass-ui{--gl:linear-gradient(145deg,rgba(246,239,228,.13),rgba(246,239,228,.045));--gl-b:1px solid rgba(246,239,228,.16);
+  --gl-s:0 24px 50px -24px rgba(0,0,0,.6),inset 0 1px 0 rgba(246,239,228,.16)}
 html.glass-ui{background:
-  radial-gradient(60vmax 50vmax at 8% 4%,#FFD9EC 0,transparent 70%),radial-gradient(60vmax 55vmax at 100% 20%,#CFE3FF 0,transparent 70%),
-  radial-gradient(70vmax 60vmax at 10% 62%,#E6D6FF 0,transparent 70%),radial-gradient(60vmax 55vmax at 96% 92%,#FFE3CC 0,transparent 70%),
-  linear-gradient(160deg,#FBEFF8,#EEF3FF 55%,#FFF4EA);background-attachment:fixed;min-height:100%}
+  radial-gradient(70vmax 55vmax at 0% 0%,#5A4037 0,transparent 68%),radial-gradient(60vmax 50vmax at 105% 18%,color-mix(in srgb,var(--pink) 22%,#382620) 0,transparent 66%),
+  radial-gradient(75vmax 60vmax at 100% 100%,#4D3830 0,transparent 70%),radial-gradient(55vmax 45vmax at -5% 78%,color-mix(in srgb,var(--pink) 12%,#382620) 0,transparent 66%),
+  #2E1E19;background-attachment:fixed;min-height:100%}
 .glass-ui body{background:transparent}
 .glass-ui .va-card,.glass-ui .vac,.glass-ui .focus,.glass-ui .d-tiles div,.glass-ui .seg3,.glass-ui .wk-cta{
-  background:var(--gl);border:var(--gl-b);box-shadow:var(--gl-s);-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5)}
-.glass-ui .va-card,.glass-ui .vac{--stage-surface:transparent;--stage-fg:#3B2A47;--stage-muted:rgba(59,42,71,.62);--va-card-shadow:var(--gl-s);--va-hover:rgba(255,255,255,.5)}
-.glass-ui .focus{--stage-fg:#3B2A47;--stage-muted:rgba(59,42,71,.62);--stage-surface:transparent;--chip:rgba(255,255,255,.55);--chip-hover:rgba(255,255,255,.8)}
-.glass-ui .tick{background:rgba(59,42,71,.2)} .glass-ui .tick.is-on{background:#A77BE0}
-.glass-ui .tabbar{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.75));border-top:1px solid rgba(255,255,255,.9);-webkit-backdrop-filter:blur(24px) saturate(1.5);backdrop-filter:blur(24px) saturate(1.5)}
-.glass-ui .sheet-in{background:linear-gradient(180deg,rgba(252,246,253,.9),rgba(246,240,252,.94));-webkit-backdrop-filter:blur(30px) saturate(1.4);backdrop-filter:blur(30px) saturate(1.4);box-shadow:0 -1px 0 rgba(255,255,255,.9) inset}
-.glass-ui .hoy-pg{background:rgba(255,255,255,.7)} .glass-ui .hoy-pg i{background:linear-gradient(90deg,#F4A9D8,#C4A6F7 60%,#A9C8FF)}
-.glass-ui .seg3 button.on,.glass-ui .late-all{background:linear-gradient(135deg,#F7B9E3,#C9B0F8);color:#3B2A47}
-.glass-ui .swipe-row{--sr-drawer:#E9DDF6;--sr-on-drawer:#3B2A47}
-.glass-ui .shred-row{background:rgba(255,255,255,.6);color:#3B2A47} .glass-ui .shred-row small{color:#75648A}
-.glass-ui .voice-pill{--vp-icon:#75648A;--vp-bg:rgba(255,255,255,.6)}
-.glass-ui .dash{--l1:#EBD5F7;--l2:#D2A8EE;--l3:#A56BD6} .glass-ui .bars button.cur i{background:#A56BD6}
-.glass-ui .stepper{--stepper-frame:rgba(255,255,255,.6);--stepper-frame-edge:rgba(255,255,255,.9)}
-.glass-ui .qd button{background:rgba(255,255,255,.45);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.9)}
+  background:var(--gl);border:var(--gl-b);box-shadow:var(--gl-s);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3)}
+.glass-ui .va-card,.glass-ui .vac{--stage-surface:transparent;--va-card-shadow:var(--gl-s)}
+.glass-ui .focus{--stage-surface:transparent}
+.glass-ui .swipe-row,.glass-ui #wkPend .swipe-row{--sr-row:#412E28}
+.glass-ui .swipe-row{border-radius:16px;box-shadow:inset 0 1px 0 rgba(246,239,228,.1)}
+.glass-ui .tabbar{background:linear-gradient(180deg,rgba(56,38,32,.45),rgba(46,30,25,.72));border-top:1px solid rgba(246,239,228,.14);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
+.glass-ui .sheet-in{background:linear-gradient(180deg,rgba(66,46,40,.86),rgba(52,35,29,.93));-webkit-backdrop-filter:blur(30px) saturate(1.3);backdrop-filter:blur(30px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(246,239,228,.16)}
 </style>
 
 <header class="top"><div class="wrap">
