@@ -33,13 +33,14 @@ function track(ev){
   const root = document.documentElement, mq = matchMedia("(prefers-color-scheme: light)");
   let pref = "auto"; try { pref = localStorage.getItem("lapausa.theme") || "auto"; } catch(e) {}
   function apply(anim){
-    const glass = pref === "glass", t = glass ? "dark" : pref === "auto" ? (mq.matches ? "light" : "dark") : pref;
-    root.classList.toggle("glass-ui", glass);
+    if (pref === "glass") pref = "dark";
+    const t = pref === "auto" ? (mq.matches ? "light" : "dark") : pref;
+    root.classList.add("glass-ui");
     if (anim) { root.classList.add("theme-anim"); setTimeout(() => root.classList.remove("theme-anim"), 420); }
     root.dataset.theme = t; root.dataset.pref = pref; root.classList.toggle("light-ui", t === "light");
     let m = document.querySelector('meta[name="theme-color"]'); if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.append(m); }
-    m.content = glass ? "#3A2721" : t === "light" ? "#F7F1E8" : "#382620";
-    const b = document.getElementById("thm"); if (b) b.setAttribute("aria-label", "Tema: " + (pref === "auto" ? "automático" : pref === "light" ? "claro" : pref === "glass" ? "cristal" : "oscuro") + ". Tocá para cambiar");
+    m.content = t === "light" ? "#F7F1E8" : "#3A2721";
+    const b = document.getElementById("thm"); if (b) b.setAttribute("aria-label", "Tema: " + (pref === "auto" ? "automático" : pref === "light" ? "claro" : "oscuro") + ". Tocá para cambiar");
   }
   apply(false);
   mq.addEventListener && mq.addEventListener("change", () => { if (pref === "auto") apply(true); });
@@ -739,24 +740,36 @@ html.theme-anim *,html.theme-anim *::before,html.theme-anim *::after{transition:
 .edit.ed-t input{flex:1;min-width:0}
 @media (prefers-reduced-motion:reduce){.qd{animation:none}.hoy-pg i{transition:none}}
 
-/* ---- tema Cristal (opcional): mismos colores de la app, con paneles de vidrio ---- */
-.seg3{grid-template-columns:repeat(4,1fr)}
-.seg3 button{font-size:12.5px;padding:0 2px}
+/* ---- Cristal: el aspecto de base, en oscuro y en claro (mismos colores; paneles de vidrio) ---- */
 :root.glass-ui{--gl:linear-gradient(145deg,rgba(246,239,228,.13),rgba(246,239,228,.045));--gl-b:1px solid rgba(246,239,228,.16);
-  --gl-s:0 24px 50px -24px rgba(0,0,0,.6),inset 0 1px 0 rgba(246,239,228,.16)}
+  --gl-s:0 24px 50px -24px rgba(0,0,0,.6),inset 0 1px 0 rgba(246,239,228,.16);--card:#433029;--card-e:inset 0 0 0 1px rgba(246,239,228,.07),inset 0 1px 0 rgba(246,239,228,.1);
+  --bar:linear-gradient(180deg,rgba(56,38,32,.45),rgba(46,30,25,.72));--bar-b:rgba(246,239,228,.14);--sheet:linear-gradient(180deg,rgba(66,46,40,.86),rgba(52,35,29,.93))}
+:root.glass-ui.light-ui{--gl:linear-gradient(145deg,rgba(255,255,255,.78),rgba(255,255,255,.42));--gl-b:1px solid rgba(255,255,255,.95);
+  --gl-s:0 22px 46px -26px rgba(43,28,23,.38),inset 0 1px 0 rgba(255,255,255,.95);--card:#FFFCF6;--card-e:inset 0 0 0 1px rgba(43,28,23,.05),0 10px 22px -18px rgba(43,28,23,.4);
+  --bar:linear-gradient(180deg,rgba(247,241,232,.55),rgba(247,241,232,.86));--bar-b:rgba(255,255,255,.9);--sheet:linear-gradient(180deg,rgba(252,248,242,.9),rgba(247,241,232,.95))}
 html.glass-ui{background:
   radial-gradient(70vmax 55vmax at 0% 0%,#5A4037 0,transparent 68%),radial-gradient(60vmax 50vmax at 105% 18%,color-mix(in srgb,var(--pink) 22%,#382620) 0,transparent 66%),
   radial-gradient(75vmax 60vmax at 100% 100%,#4D3830 0,transparent 70%),radial-gradient(55vmax 45vmax at -5% 78%,color-mix(in srgb,var(--pink) 12%,#382620) 0,transparent 66%),
   #2E1E19;background-attachment:fixed;min-height:100%}
+html.glass-ui.light-ui{background:
+  radial-gradient(70vmax 55vmax at 0% 0%,#FFFBF4 0,transparent 68%),radial-gradient(60vmax 50vmax at 105% 16%,color-mix(in srgb,var(--pink) 42%,#F7F1E8) 0,transparent 66%),
+  radial-gradient(75vmax 60vmax at 100% 100%,#EFE2D0 0,transparent 70%),radial-gradient(55vmax 45vmax at -5% 78%,color-mix(in srgb,var(--pink) 26%,#F7F1E8) 0,transparent 66%),
+  #F3EADD;background-attachment:fixed;min-height:100%}
 .glass-ui body{background:transparent}
-.glass-ui .va-card,.glass-ui .vac,.glass-ui .focus,.glass-ui .d-tiles div,.glass-ui .seg3,.glass-ui .wk-cta{
+.glass-ui .va-card,.glass-ui .vac,.glass-ui .focus,.glass-ui .d-tiles div,.glass-ui .seg,.glass-ui .seg3,.glass-ui .wk-cta{
   background:var(--gl);border:var(--gl-b);box-shadow:var(--gl-s);-webkit-backdrop-filter:blur(22px) saturate(1.3);backdrop-filter:blur(22px) saturate(1.3)}
 .glass-ui .va-card,.glass-ui .vac{--stage-surface:transparent;--va-card-shadow:var(--gl-s)}
 .glass-ui .focus{--stage-surface:transparent}
-.glass-ui .swipe-row,.glass-ui #wkPend .swipe-row{--sr-row:#412E28}
-.glass-ui .swipe-row{border-radius:16px;box-shadow:inset 0 1px 0 rgba(246,239,228,.1)}
-.glass-ui .tabbar{background:linear-gradient(180deg,rgba(56,38,32,.45),rgba(46,30,25,.72));border-top:1px solid rgba(246,239,228,.14);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
-.glass-ui .sheet-in{background:linear-gradient(180deg,rgba(66,46,40,.86),rgba(52,35,29,.93));-webkit-backdrop-filter:blur(30px) saturate(1.3);backdrop-filter:blur(30px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(246,239,228,.16)}
+.glass-ui .tabbar{background:var(--bar);border-top:1px solid var(--bar-b);-webkit-backdrop-filter:blur(24px) saturate(1.3);backdrop-filter:blur(24px) saturate(1.3)}
+.glass-ui .sheet-in{background:var(--sheet);-webkit-backdrop-filter:blur(30px) saturate(1.3);backdrop-filter:blur(30px) saturate(1.3);box-shadow:inset 0 1px 0 var(--bar-b)}
+/* pendientes: cada uno es una tarjeta con aire adentro, alineada con el resto de la página */
+.glass-ui .swipe-row,.glass-ui #wkPend .swipe-row,.glass-ui #dvsel .swipe-row{--sr-row:var(--card);--sr-r:18px;margin:0 -14px}
+.glass-ui .swipe-row__clip{box-shadow:var(--card-e)}
+.glass-ui .swipe-row__surface .row{padding:14px 14px}
+.glass-ui .it:has(.swipe-row){border-bottom:0;padding:4px 0}
+.glass-ui .it:has(.swipe-row) .acts{padding-top:10px}
+.glass-ui .field,.glass-ui .tpl > *,.glass-ui .qd button,.glass-ui .late-all,.glass-ui .thm{background:var(--gl);border:var(--gl-b);box-shadow:inset 0 1px 0 var(--bar-b);-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3)}
+.glass-ui .it:not(:has(.swipe-row)){border-bottom-color:color-mix(in srgb,var(--line) 60%,transparent)}
 </style>
 
 <header class="top"><div class="wrap">
@@ -949,7 +962,7 @@ html.glass-ui{background:
   <div class="cfg-h"><h2 class="wk-t" id="cfgT">Ajustes</h2><button type="button" class="sheet-x" id="cfgX" aria-label="Cerrar">✕</button></div>
   <section class="cfg-first">
     <h2 class="lbl">Apariencia</h2>
-    <div class="seg3" id="thmSeg" role="group" aria-label="Tema"><button type="button" data-p="auto">Automático</button><button type="button" data-p="light">Claro</button><button type="button" data-p="dark">Oscuro</button><button type="button" data-p="glass">Cristal</button></div>
+    <div class="seg3" id="thmSeg" role="group" aria-label="Tema"><button type="button" data-p="auto">Automático</button><button type="button" data-p="light">Claro</button><button type="button" data-p="dark">Oscuro</button></div>
   </section>
   <div id="cfgBody"></div>
   <section>
